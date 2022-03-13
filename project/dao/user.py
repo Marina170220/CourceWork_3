@@ -16,6 +16,9 @@ class UserDAO:
     def get_all(self):
         return self._db_session.query(User).all()
 
+    def get_by_limit(self, limit, offset):
+        return self._db_session.query(User).limit(limit).offset(offset).all()
+
     def create(self, user_data):
         user = User(**user_data)
         self._db_session.add(user)
@@ -26,8 +29,3 @@ class UserDAO:
         self._db_session.add(user)
         self._db_session.commit()
         return user
-
-    def delete(self, pk):
-        user = self.get_one(pk)
-        self._db_session.delete(user)
-        self._db_session.commit()
