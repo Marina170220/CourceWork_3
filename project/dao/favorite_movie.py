@@ -8,7 +8,7 @@ class FavoriteMovieDAO:
         self._db_session = session
 
     def get_by_user_id(self, pk):
-        return self._db_session.query(FavoriteMovie).filter(FavoriteMovie.id == pk).all()
+        return self._db_session.query(FavoriteMovie).filter(FavoriteMovie.user_id == pk).all()
 
     def create(self, user_id, movie_id):
         movie = FavoriteMovie(user_id=user_id, movie_id=movie_id)

@@ -6,7 +6,7 @@ class User(BaseMixin, db.Model):
     __tablename__ = "users"
 
     email = db.Column(db.String(50), unique=True, nullable=False)
-    password = db.Column(db.String(50), nullable=False)
+    password = db.Column(db.String(500), nullable=False)
     role = db.Column(db.String(50), nullable=False)
     name = db.Column(db.String(100))
     surname = db.Column(db.String(100))

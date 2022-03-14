@@ -7,18 +7,8 @@ import base64
 from flask import request, abort
 import jwt
 
-from flask import current_app
 from project.config import BaseConfig
 from project.exceptions import ItemNotFound
-
-#
-# def generate_password_digest(password):
-#     return hashlib.pbkdf2_hmac(
-#         hash_name="sha256",
-#         password=password.encode("utf-8"),
-#         salt=current_app.config["PWD_HASH_SALT"],
-#         iterations=current_app.config["PWD_HASH_ITERATIONS"],
-#     )
 
 
 def generate_password_hash(password):
@@ -117,7 +107,8 @@ def compare_passwords(password_hash, entered_password):
 def login_user(req_json, user):
     """
     Авторизация пользователя и получение токенов.
-    Param req_json: данные пользователя в json-формате.
+    Param req_json: данные, введённые пользователем, в json-формате.
+    Param user: данные пользователя из БД.
     Return: access и refresh токены либо False в случае, если отсутствуют имя и/или пароль пользователя.
     """
     user_email = req_json.get('email')

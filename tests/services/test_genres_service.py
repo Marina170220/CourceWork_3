@@ -3,9 +3,9 @@ from unittest.mock import Mock, patch
 import pytest
 
 from project.dao.models import Genre
-from project.exceptions import ItemNotFound
-from project.schemas.genre import GenreSchema
 from project.services import GenresService
+from project.schemas.genre import GenreSchema
+from project.exceptions import ItemNotFound
 
 
 class TestGenresService:
@@ -31,11 +31,11 @@ class TestGenresService:
         genre_dao_mock().get_all.assert_called_once()
 
     def test_get_item_by_id(self, genre_dao_mock, genre):
-        assert self.service.get_item_by_id(genre.id) == GenreSchema().dump(genre)
+        assert self.service.get_genre_by_id(genre.id) == GenreSchema().dump(genre)
         genre_dao_mock().get_by_id.assert_called_once_with(genre.id)
 
     def test_get_item_by_id_not_found(self, genre_dao_mock):
         genre_dao_mock().get_by_id.return_value = None
 
         with pytest.raises(ItemNotFound):
-            self.service.get_item_by_id(1)
+            self.service.get_genre_by_id(1)

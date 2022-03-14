@@ -15,23 +15,26 @@ class MoviesView(Resource):
     @movies_ns.response(200, "OK")
     def get(self):
         """Get all movies"""
-        page = request.args.get('page')
-        status = request.args.get('status')
-        limits = {'page': page,
-                  'status': status}
-        director = request.args.get("director_id")
-        genre = request.args.get("genre_id")
-        year = request.args.get("year")
-        filters = {
-            "director_id": director,
-            "genre_id": genre,
-            "year": year,
-        }
-        if limits:
-            return MoviesService(db.session).get_limit_movies(limits)
+        limits = {}
+        filters = {}
+        if request.args.get('page'):
+            limits['page'] = request.args.get('page')
+        if request.args.get('status'):
+            limits['status'] = request.args.get('status')
+
+        if request.args.get("director_id"):
+            filters['director_id'] = request.args.get('director_id')
+        if request.args.get("genre_id"):
+            filters['genre_id'] = request.args.get('genre_id')
+        if request.args.get("year"):
+            filters['year'] = request.args.get('year')
+
         if filters:
             return MoviesService(db.session).get_filter_movies(filters)
-        return MoviesService(db.session).get_all_movies()
+        if limits:
+            return MoviesService(db.session).get_limit_movies(limits)
+        else:
+            return MoviesService(db.session).get_all_movies()
 
 
 @movies_ns.route('/<int:mov_id>')
@@ -45,4 +48,3 @@ class MovieView(Resource):
             return MoviesService(db.session).get_movie_by_id(mov_id)
         except ItemNotFound:
             abort(404)
-

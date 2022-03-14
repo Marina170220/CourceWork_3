@@ -23,7 +23,7 @@ class MoviesService(BaseService):
         status = 'no_status'
         if args.get('page'):
             limit = BaseConfig.ITEMS_PER_PAGE
-            offset = (args.get('page') - 1) * limit
+            offset = (int(args.get('page')) - 1) * limit
         if args.get('status'):
             status = args.get('status')
 
@@ -32,13 +32,13 @@ class MoviesService(BaseService):
 
     def get_filter_movies(self, filters):
         if filters.get('director_id'):
-            movies = MovieDAO(self._db_session).get_by_director(filters.get('director_id'))
+            movies = MovieDAO(self._db_session).get_by_director(filters['director_id'])
             return MovieSchema(many=True).dump(movies)
         elif filters.get('genre_id'):
-            movies = MovieDAO(self._db_session).get_by_genre(filters.get('genre_id'))
+            movies = MovieDAO(self._db_session).get_by_genre(filters['genre_id'])
             return MovieSchema(many=True).dump(movies)
         elif filters.get('year'):
-            movies = MovieDAO(self._db_session).get_by_year(filters.get('year'))
+            movies = MovieDAO(self._db_session).get_by_year(filters['year'])
             return MovieSchema(many=True).dump(movies)
         else:
             movies = MovieDAO(self._db_session).get_all()

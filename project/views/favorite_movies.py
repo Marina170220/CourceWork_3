@@ -28,11 +28,12 @@ class FavoriteMovieView(Resource):
     @fav_movies_ns.response(200, "OK")
     @fav_movies_ns.response(404, "Movie not found")
     def post(self, mov_id: int):
-        """Add favorite movie"""
+        """Add movie to favorites"""
         user_id = auth_check().get('id')
         return FavoriteMoviesService(db.session).create(user_id, mov_id)
 
     def delete(self, mov_id: int):
-        """Delete favorite movie"""
+        """Delete movie from favorites"""
         user_id = auth_check().get('id')
-        return FavoriteMoviesService(db.session).delete(user_id, mov_id)
+        FavoriteMoviesService(db.session).delete(user_id, mov_id)
+        return "", 204

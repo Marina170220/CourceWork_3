@@ -35,6 +35,7 @@ class GenreView(Resource):
             abort(404)
 
     def patch(self, uid: int):
+        """Update user's data"""
         req_json = request.json
         if not req_json:
             abort(400)
@@ -52,6 +53,7 @@ class UserPatchView(Resource):
     @users_ns.response(200, "OK")
     @users_ns.response(404, "User not found")
     def put(self, uid: int):
+        """Update user's password"""
         req_json = request.json
         if not req_json:
             abort(400)

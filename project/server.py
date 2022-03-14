@@ -1,7 +1,8 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_cors import CORS
 from flask_restx import Api
 
+from project.config import DevelopmentConfig
 from project.setup_db import db
 from project.views import genres_ns
 from project.views.auth import auth_ns
@@ -26,6 +27,10 @@ def create_app(config_obj):
     app = Flask(__name__)
     app.config.from_object(config_obj)
 
+    # @app.route('/')
+    # def index():
+    #     return render_template('index.html')
+
     cors.init_app(app)
     db.init_app(app)
     api.init_app(app)
@@ -40,29 +45,10 @@ def create_app(config_obj):
 
     return app
 
-"""
-from flask import Flask, render_template
-from flask_restx import Api
 
-from config import Config
-from setup_db import db
-from views import directors_ns
+app = create_app(DevelopmentConfig())
+app.debug = True
 
+if __name__ == '__main__':
+    app.run()
 
-api = Api(title="Flask Course Project 3", doc="/docs")
-
-def create_app():
-    app = Flask(__name__)
-    app.config.from_object(Config)
-
-    @app.route('/')
-    def index():
-        return render_template('index.html')
-
-    db.init_app(app)
-    api.init_app(app)
-
-    api.add_namespace(directors_ns)
-    
-    return app
-"""

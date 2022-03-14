@@ -21,6 +21,8 @@ class MovieDAO:
             return self._db_session.query(Movie).limit(limit).offset(offset).all()
         elif status == 'new':
             return self._db_session.query(Movie).order_by(desc(Movie.year)).all()
+        else:
+            return self._db_session.query(Movie).all()
 
     def get_by_director(self, dir_id):
         return self._db_session.query(Movie).filter(Movie.director_id == dir_id).all()

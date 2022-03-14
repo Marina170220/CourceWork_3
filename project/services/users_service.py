@@ -23,7 +23,7 @@ class UsersService(BaseService):
 
     def get_limit_users(self, page):
         limit = BaseConfig.ITEMS_PER_PAGE
-        offset = (page - 1) * limit
+        offset = (int(page) - 1) * limit
         users = UserDAO(self._db_session).get_by_limit(limit=limit, offset=offset)
         return UserSchema(many=True).dump(users)
 
@@ -35,7 +35,7 @@ class UsersService(BaseService):
         return UserSchema().dump(user)
 
     def update(self, user_data):
-        user = self.get_user_by_id(user_data.get('id'))
+        user = UserDAO(self._db_session).get_one_by_id(user_data.get('id'))
         if user:
             if user_data.get('name'):
                 user.name = user_data.get('name')
@@ -51,10 +51,10 @@ class UsersService(BaseService):
     def update_user_pass(self, user_data):
         user_password_old = user_data.get('password_1')
         user_password_new = user_data.get('password_2')
-        user = self.get_user_by_id(user_data.get('id'))
+        user = UserDAO(self._db_session).get_one_by_id(user_data.get('id'))
         if user:
             if compare_passwords(user.password, user_password_old):
-                user['password'] = generate_password_hash(user_password_new)
+                user.password = generate_password_hash(user_password_new)
             updated_user = UserDAO(self._db_session).update(user)
             return UserSchema().dump(updated_user)
         return None

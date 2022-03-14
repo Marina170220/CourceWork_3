@@ -24,10 +24,10 @@ class TestGenreDAO:
         return g
 
     def test_get_genre_by_id(self, genre_1):
-        assert self.dao.get_by_id(genre_1.id) == genre_1
+        assert self.dao.get_one_by_id(genre_1.id) == genre_1
 
     def test_get_genre_by_id_not_found(self):
-        assert self.dao.get_by_id(1) is None
+        assert self.dao.get_one_by_id(1) is None
 
     def test_get_all_genres(self, genre_1, genre_2):
         assert self.dao.get_all() == [genre_1, genre_2]
