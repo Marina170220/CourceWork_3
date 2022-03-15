@@ -8,3 +8,5 @@ class MovieSchema(Schema):
     trailer = fields.Str(required=True)
     year = fields.Int(required=True)
     rating = fields.Float(required=True)
+    genre = fields.Str(required=True)
+    director = fields.Str(required=True)

@@ -4,7 +4,7 @@ from flask_restx import abort, Namespace, Resource
 from project.exceptions import ItemNotFound
 from project.services.movies_service import MoviesService
 from project.setup_db import db
-from project.tools.security import auth_required
+from project.tools.security import auth_required, auth_check
 
 movies_ns = Namespace("movies")
 
@@ -35,6 +35,19 @@ class MoviesView(Resource):
             return MoviesService(db.session).get_limit_movies(limits)
         else:
             return MoviesService(db.session).get_all_movies()
+
+
+@movies_ns.route('/genre')
+class MoviesByGenreView(Resource):
+    @auth_required
+    @movies_ns.response(200, "OK")
+    def get(self):
+        """Get movies by user's favorite genre"""
+        user_id = auth_check().get('id')
+        try:
+            return MoviesService(db.session).get_movies_by_favorite_genre(user_id)
+        except ItemNotFound:
+            abort(404)
 
 
 @movies_ns.route('/<int:mov_id>')

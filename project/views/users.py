@@ -4,17 +4,32 @@ from flask_restx import abort, Namespace, Resource
 from project.exceptions import ItemNotFound
 from project.services.users_service import UsersService
 from project.setup_db import db
-from project.tools.security import auth_required
+from project.tools.security import auth_required, admin_required, auth_check
 
-users_ns = Namespace("users")
+users_ns = Namespace("user")
 
 
 @users_ns.route('/')
-class UsersView(Resource):
+class OneUserView(Resource):
     @auth_required
     @users_ns.response(200, "OK")
+    @users_ns.response(404, "User not found")
     def get(self):
-        """Get all users"""
+        """Get user by id"""
+        user_id = auth_check().get('id')
+        try:
+            return UsersService(db.session).get_user_by_id(user_id)
+        except ItemNotFound:
+            abort(404)
+
+
+@users_ns.route('/all')
+class UsersView(Resource):
+    @auth_required
+    @admin_required
+    @users_ns.response(200, "OK")
+    def get(self):
+        """Get all users (available only to admins)"""
         page = request.args.get('page')
         if page:
             return UsersService(db.session).get_limit_users(page)
@@ -23,17 +38,10 @@ class UsersView(Resource):
 
 
 @users_ns.route("/<int:uid>")
-class GenreView(Resource):
+class UserView(Resource):
     @auth_required
     @users_ns.response(200, "OK")
     @users_ns.response(404, "User not found")
-    def get(self, uid: int):
-        """Get user by id"""
-        try:
-            return UsersService(db.session).get_user_by_id(uid)
-        except ItemNotFound:
-            abort(404)
-
     def patch(self, uid: int):
         """Update user's data"""
         req_json = request.json

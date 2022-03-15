@@ -1,7 +1,7 @@
 from flask import request
 from flask_restx import abort, Namespace, Resource
 
-from project.exceptions import ItemNotFound
+from project.exceptions import ItemNotFound, ItemAlreadyExists
 from project.services.fav_movies_service import FavoriteMoviesService
 from project.setup_db import db
 from project.tools.security import auth_required, auth_check
@@ -30,7 +30,10 @@ class FavoriteMovieView(Resource):
     def post(self, mov_id: int):
         """Add movie to favorites"""
         user_id = auth_check().get('id')
-        return FavoriteMoviesService(db.session).create(user_id, mov_id)
+        try:
+            return FavoriteMoviesService(db.session).create(user_id, mov_id)
+        except ItemAlreadyExists:
+            abort(409)
 
     def delete(self, mov_id: int):
         """Delete movie from favorites"""
