@@ -89,6 +89,18 @@ def generate_token(data):
     return {'access_token': access_token, 'refresh_token': refresh_token}
 
 
+def get_id_from_token():
+    """
+    Получаем id авторизованного пользователя из токена.
+    """
+
+    data = request.headers["Authorization"]
+    token = data.split("Bearer ")[-1]
+    user_data = jwt.decode(token, BaseConfig.SECRET_KEY, algorithms=[BaseConfig.ALGORITHM])
+
+    return user_data.get('id')
+
+
 def compare_passwords(password_hash, entered_password):
     """
     Сравниваем пароли пользователя.

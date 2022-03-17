@@ -20,6 +20,11 @@ class TestGenresView:
             {"id": genre.id, "name": genre.name},
         ]
 
+    def test_genre_pages(self, client, genre):
+        response = client.get("/genres/?page=1")
+        assert response.status_code == 200
+        assert len(response.json) == 1
+
 
 class TestGenreView:
     url = "/genres/{genre_id}"

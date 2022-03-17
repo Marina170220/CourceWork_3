@@ -50,39 +50,40 @@ class UsersService(BaseService):
         user_password = user_data.get('password')
         if user_password:
             user_data['password'] = generate_password_hash(user_password)
-        user = UserDAO(self._db_session).create(user_data)
-        return UserSchema().dump(user)
+            user = UserDAO(self._db_session).create(user_data)
+            return UserSchema().dump(user)
+        return None
 
-    def update(self, user_data):
+    def update(self, user_data, uid):
         """
         Обновляем данные пользователя.
         Param user_data: данные пользователя, которые необходимо обновить.
+        Param uid: id пользователя, чьи данные обновляем (получаем из токена).
         """
-        user = UserDAO(self._db_session).get_one_by_id(user_data.get('id'))
-        if user:
-            if user_data.get('name'):
-                user.name = user_data.get('name')
-            if user_data.get('surname'):
-                user.surname = user_data.get('surname')
-            if user_data.get('favorite_genre'):
-                user.favorite_genre = user_data.get('favorite_genre')
+        user = UserDAO(self._db_session).get_one_by_id(uid)
+        if user_data.get('name'):
+            user.name = user_data.get('name')
+        if user_data.get('surname'):
+            user.surname = user_data.get('surname')
+        if user_data.get('favorite_genre'):
+            user.favorite_genre = user_data.get('favorite_genre')
 
-            updated_user = UserDAO(self._db_session).update(user)
-            return UserSchema().dump(updated_user)
-        return None
+        updated_user = UserDAO(self._db_session).update(user)
+        return UserSchema().dump(updated_user)
 
-    def update_user_pass(self, user_data):
+    def update_user_pass(self, user_data, uid):
         """
         Обновляем пароль пользователя, для этого нужно отправить два пароля password_1 и password_2.
         Перед тем, как установить новый пароль, проверяем, совпадает ли старый с паролем, хранящимся в БД.
         Param user_data: данные со старым и новым паролем, введённые пользователем.
+        Param uid: id пользователя, чьи пароли обновляем (получаем из токена).
+
         """
         user_password_old = user_data.get('password_1')
         user_password_new = user_data.get('password_2')
-        user = UserDAO(self._db_session).get_one_by_id(user_data.get('id'))
-        if user:
-            if compare_passwords(user.password, user_password_old):
-                user.password = generate_password_hash(user_password_new)
+        user = UserDAO(self._db_session).get_one_by_id(uid)
+        if compare_passwords(user.password, user_password_old):
+            user.password = generate_password_hash(user_password_new)
             updated_user = UserDAO(self._db_session).update(user)
             return UserSchema().dump(updated_user)
         return None

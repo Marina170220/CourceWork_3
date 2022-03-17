@@ -13,7 +13,9 @@ class MovieDAO:
         Получаем фильм из БД по его id.
         Param pk: id фильма.
         """
-        return self._db_session.query(Movie).filter(Movie.id == pk).one_or_none()
+        return self._db_session.query(Movie).join(Director, Genre).filter(Movie.id == pk,
+                                                                          Movie.director_id == Director.id,
+                                                                          Movie.genre_id == Genre.id).one_or_none()
 
     def get_all(self):
         """

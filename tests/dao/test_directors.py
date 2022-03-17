@@ -31,3 +31,8 @@ class TestDirectorDAO:
 
     def test_get_all_directors(self, dir_1, dir_2):
         assert self.dao.get_all() == [dir_1, dir_2]
+
+    def test_get_by_limit(self):
+        limit = 2
+        offset = 10
+        assert len(self.dao.get_by_limit(limit, offset)) == 0

@@ -4,7 +4,7 @@ from flask_restx import abort, Namespace, Resource
 from project.exceptions import ItemNotFound
 from project.services.movies_service import MoviesService
 from project.setup_db import db
-from project.tools.security import auth_required, auth_check
+from project.tools.security import auth_required, auth_check, get_id_from_token
 
 movies_ns = Namespace("movies")
 
@@ -43,7 +43,7 @@ class MoviesByGenreView(Resource):
     @movies_ns.response(200, "OK")
     def get(self):
         """Get movies by user's favorite genre"""
-        user_id = auth_check().get('id')
+        user_id = get_id_from_token()
         try:
             return MoviesService(db.session).get_movies_by_favorite_genre(user_id)
         except ItemNotFound:

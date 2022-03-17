@@ -6,6 +6,3 @@ class FavoriteMovie(db.Model):
 
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), primary_key=True, nullable=False)
     movie_id = db.Column(db.Integer, db.ForeignKey("movies.id"), primary_key=True, nullable=False)
-
-    def __repr__(self):
-        return "<FavoriteMovie>"

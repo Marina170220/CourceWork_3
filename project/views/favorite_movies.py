@@ -1,10 +1,9 @@
-from flask import request
 from flask_restx import abort, Namespace, Resource
 
 from project.exceptions import ItemNotFound, ItemAlreadyExists
 from project.services.fav_movies_service import FavoriteMoviesService
 from project.setup_db import db
-from project.tools.security import auth_required, auth_check
+from project.tools.security import auth_required, auth_check, get_id_from_token
 
 fav_movies_ns = Namespace("favorites/movies")
 
@@ -15,9 +14,9 @@ class FavoriteMoviesView(Resource):
     @fav_movies_ns.response(200, "OK")
     def get(self):
         """Get all favorite movies"""
-        user_id = auth_check().get('id')
+        uid = get_id_from_token()
         try:
-            return FavoriteMoviesService(db.session).get_by_user_id(user_id)
+            return FavoriteMoviesService(db.session).get_by_user_id(uid)
         except ItemNotFound:
             abort(404)
 
@@ -29,14 +28,14 @@ class FavoriteMovieView(Resource):
     @fav_movies_ns.response(404, "Movie not found")
     def post(self, mov_id: int):
         """Add movie to favorites"""
-        user_id = auth_check().get('id')
+        uid = get_id_from_token()
         try:
-            return FavoriteMoviesService(db.session).create(user_id, mov_id)
+            return FavoriteMoviesService(db.session).create(uid, mov_id)
         except ItemAlreadyExists:
             abort(409)
 
     def delete(self, mov_id: int):
         """Delete movie from favorites"""
-        user_id = auth_check().get('id')
-        FavoriteMoviesService(db.session).delete(user_id, mov_id)
+        uid = get_id_from_token()
+        FavoriteMoviesService(db.session).delete(uid, mov_id)
         return "", 204
