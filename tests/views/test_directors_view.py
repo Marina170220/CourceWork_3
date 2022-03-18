@@ -13,6 +13,18 @@ class TestDirectorsView:
         db.session.commit()
         return d
 
+    @pytest.fixture()
+
+    @pytest.fixture
+    def director_dao_service(self, director):
+        with patch("project.services.directors_service.DirectorDAO") as mock:
+            mock.return_value = Mock(
+                get_one_by_id=Mock(return_value=DirectorSchema().dump(director)),
+                get_all=Mock(return_value=DirectorSchema(many=True).dump([director])),
+                get_by_limit=Mock(return_value=DirectorSchema(many=True).dump([director]))
+            )
+            yield mock
+
     def test_get_directors(self, client, director):
         response = client.get(self.url)
         assert response.status_code == 200

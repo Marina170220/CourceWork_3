@@ -1,9 +1,9 @@
 from flask_restx import abort, Namespace, Resource
 
-from project.exceptions import ItemNotFound, ItemAlreadyExists
+from project.exceptions import ItemNotFound
 from project.services.fav_movies_service import FavoriteMoviesService
 from project.setup_db import db
-from project.tools.security import auth_required, auth_check, get_id_from_token
+from project.tools.security import auth_required, get_id_from_token
 
 fav_movies_ns = Namespace("favorites/movies")
 
@@ -25,14 +25,11 @@ class FavoriteMoviesView(Resource):
 class FavoriteMovieView(Resource):
     @auth_required
     @fav_movies_ns.response(200, "OK")
-    @fav_movies_ns.response(404, "Movie not found")
+    @fav_movies_ns.response(412, "Movie already exists")
     def post(self, mov_id: int):
         """Add movie to favorites"""
         uid = get_id_from_token()
-        try:
-            return FavoriteMoviesService(db.session).create(uid, mov_id)
-        except ItemAlreadyExists:
-            abort(409)
+        return FavoriteMoviesService(db.session).create(uid, mov_id)
 
     def delete(self, mov_id: int):
         """Delete movie from favorites"""

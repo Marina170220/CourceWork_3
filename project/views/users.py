@@ -55,18 +55,17 @@ class UserPatchView(Resource):
         except ItemNotFound:
             abort(404)
 
-
-@users_ns.route('/all')
-class UsersView(Resource):
-    @auth_required
-    @admin_required
-    @users_ns.response(200, "OK")
-    def get(self):
-        """Get all users (available only to admins)"""
-        page = request.args.get('page')
-        if page:
-            return UsersService(db.session).get_limit_users(page)
-
-        return UsersService(db.session).get_all_users()
+#
+# @users_ns.route('/all')
+# class UsersView(Resource):
+#     @admin_required
+#     @users_ns.response(200, "OK")
+#     def get(self):
+#         """Get all users (available only to admins)"""
+#         page = request.args.get('page')
+#         if page:
+#             return UsersService(db.session).get_limit_users(page)
+#
+#         return UsersService(db.session).get_all_users()
 
 

@@ -16,7 +16,7 @@ class TestUserDAO:
                     role="testrole_1",
                     name="testname_1",
                     surname="testsurname_1",
-                    favorite_genre="testgen_1"
+                    favorite_genre_id=1
                  )
         db.session.add(u)
         db.session.commit()
@@ -29,7 +29,7 @@ class TestUserDAO:
                     role="testrole_2",
                     name="testname_2",
                     surname="testsurname_2",
-                    favorite_genre="testgen_2"
+                    favorite_genre_id=2
                  )
         db.session.add(u)
         db.session.commit()

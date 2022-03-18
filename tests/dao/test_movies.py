@@ -55,7 +55,7 @@ class TestMovieDAO:
         u = User(email="testemail@test",
                  password="testpass",
                  role="user_test",
-                 favorite_genre="Драма")
+                 favorite_genre_id=1)
         db.session.add(u)
         db.session.commit()
         return u
@@ -80,7 +80,7 @@ class TestMovieDAO:
         limits = [0, 12, "no_status"]
         return limits
 
-    def test_get_movie_by_id(self, movie_1, dir_1, gen_1):
+    def test_get_movie_by_id(self, movie_1):
         movie = self.dao.get_one_by_id(movie_1.id)
         assert movie.id == 1
         assert movie == movie_1
@@ -89,7 +89,7 @@ class TestMovieDAO:
     def test_get_movie_by_id_not_found(self):
         assert self.dao.get_one_by_id(1) is None
 
-    def test_get_all_movies(self, movie_1, dir_1, gen_1):
+    def test_get_all_movies(self, movie_1):
         assert self.dao.get_all() == [movie_1]
 
     def test_get_by_limit(self, limits_all, limits_status, limits_page, no_limits):
@@ -98,13 +98,13 @@ class TestMovieDAO:
         assert len(self.dao.get_by_limit(limits_page[0], limits_page[1], limits_page[2])) == 0
         assert self.dao.get_by_limit(no_limits[0], no_limits[1], no_limits[2]) == []
 
-    def test_get_by_director(self, movie_1, dir_1, gen_1):
+    def test_get_by_director(self, movie_1, dir_1):
         assert self.dao.get_by_director(dir_1.id) == [movie_1]
 
-    def test_get_by_genre(self, movie_1, dir_1, gen_1):
+    def test_get_by_genre(self, movie_1, gen_1):
         assert self.dao.get_by_genre(gen_1.id) == [movie_1]
 
-    def test_get_by_year(self, movie_1, dir_1, gen_1):
+    def test_get_by_year(self, movie_1):
         year = 2020
         assert self.dao.get_by_year(year) == [movie_1]
 
