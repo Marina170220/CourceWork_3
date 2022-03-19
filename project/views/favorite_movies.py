@@ -10,8 +10,8 @@ fav_movies_ns = Namespace("favorites/movies")
 
 @fav_movies_ns.route("/")
 class FavoriteMoviesView(Resource):
-    @auth_required
     @fav_movies_ns.response(200, "OK")
+    @auth_required
     def get(self):
         """Get all favorite movies"""
         uid = get_id_from_token()
@@ -23,9 +23,9 @@ class FavoriteMoviesView(Resource):
 
 @fav_movies_ns.route("/<int:mov_id>")
 class FavoriteMovieView(Resource):
-    @auth_required
     @fav_movies_ns.response(200, "OK")
     @fav_movies_ns.response(412, "Movie already exists")
+    @auth_required
     def post(self, mov_id: int):
         """Add movie to favorites"""
         uid = get_id_from_token()

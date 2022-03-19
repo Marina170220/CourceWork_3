@@ -11,8 +11,8 @@ movies_ns = Namespace("movies")
 
 @movies_ns.route('/')
 class MoviesView(Resource):
-    @auth_required
     @movies_ns.response(200, "OK")
+    @auth_required
     def get(self):
         """Get all movies"""
         limits = {}
@@ -39,8 +39,8 @@ class MoviesView(Resource):
 
 @movies_ns.route('/genre')
 class MoviesByGenreView(Resource):
-    @auth_required
     @movies_ns.response(200, "OK")
+    @auth_required
     def get(self):
         """Get movies by user's favorite genre"""
         user_id = get_id_from_token()
@@ -52,9 +52,9 @@ class MoviesByGenreView(Resource):
 
 @movies_ns.route('/<int:mov_id>')
 class MovieView(Resource):
-    @auth_required
     @movies_ns.response(200, "OK")
     @movies_ns.response(404, "Movie not found")
+    @auth_required
     def get(self, mov_id: int):
         """Get movie by id"""
         try:
