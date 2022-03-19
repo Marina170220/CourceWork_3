@@ -4,7 +4,7 @@ from flask_restx import abort, Namespace, Resource
 from project.exceptions import ItemNotFound
 from project.services.users_service import UsersService
 from project.setup_db import db
-from project.tools.security import auth_required, admin_required, auth_check, get_id_from_token
+from project.tools.security import auth_required, get_id_from_token
 
 users_ns = Namespace("user")
 

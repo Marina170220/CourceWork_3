@@ -10,6 +10,7 @@ class FavoriteMoviesService(BaseService):
         """
         Получаем все фильмы, добавленные в список любимых.
         Param user_id: id пользователя.
+        Return: список словарей с данными найденных фильмов.
         """
         movies = FavoriteMovieDAO(self._db_session).get_by_user_id(user_id)
         if not movies:
@@ -21,6 +22,7 @@ class FavoriteMoviesService(BaseService):
         Добавляем фильм в список любимых.
         Param user_id: id пользователя.
         Param movie_id: id фильма.
+        Return: словарь с данными добавленного фильма.
         """
         movie = FavoriteMovieDAO(self._db_session).create(user_id, mov_id)
         return MovieSchema().dump(movie)

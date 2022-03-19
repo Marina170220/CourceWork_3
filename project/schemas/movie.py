@@ -11,7 +11,5 @@ class MovieSchema(Schema):
     trailer = fields.Str(required=True)
     year = fields.Int(required=True)
     rating = fields.Float(required=True)
-    # genre_id = fields.Str(required=True)
     genre = fields.Nested(GenreSchema)
-    # director_id = fields.Str(required=True)
     director = fields.Nested(DirectorSchema)

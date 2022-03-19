@@ -66,7 +66,7 @@ class TestUsersService:
 
     @pytest.fixture
     def no_id_updated_user_data(self, db):
-        return { "name": "new_name",
+        return {"name": "new_name",
                 "surname": "new_surname",
                 "favorite_genre": "new_genre"}
 

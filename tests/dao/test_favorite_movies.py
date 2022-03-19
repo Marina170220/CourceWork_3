@@ -4,7 +4,7 @@ from project.dao.favorite_movie import FavoriteMovieDAO
 from project.dao.models import FavoriteMovie, Movie
 
 
-class TestMovieDAO:
+class TestFavMovieDAO:
     @pytest.fixture(autouse=True)
     def dao(self, db):
         self.dao = FavoriteMovieDAO(db.session)

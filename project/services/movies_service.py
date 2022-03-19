@@ -11,6 +11,7 @@ class MoviesService(BaseService):
         """
         Получаем фильм по его id.
         Param pk: id фильма.
+        Return: словарь с данными найденного фильма.
         """
         movie = MovieDAO(self._db_session).get_one_by_id(pk)
         if not movie:
@@ -20,6 +21,7 @@ class MoviesService(BaseService):
     def get_all_movies(self):
         """
         Получаем все фильмы.
+        Return: список словарей с данными всех фильмов.
         """
         movies = MovieDAO(self._db_session).get_all()
         return MovieSchema(many=True).dump(movies)
@@ -28,6 +30,7 @@ class MoviesService(BaseService):
         """
         Получаем все фильмы, относящиеся к любимому жанру, указанному в карточке пользователя.
         Param user_id: id пользователя.
+        Return: список словарей с данными всех фильмов выбранного жанра.
         """
         movies = MovieDAO(self._db_session).get_by_favorite_genre(pk)
         return MovieSchema(many=True).dump(movies)
@@ -36,6 +39,7 @@ class MoviesService(BaseService):
         """
         Получаем все фильмы с учётом ограничений по выдаче.
         Param args: аргумент, который может содержать номер страницы и/или статус фильма.
+        Return: список словарей с данными всех фильмов номера страницы и/или статуса фильма.
         """
         limit = 0
         offset = 0
@@ -54,6 +58,8 @@ class MoviesService(BaseService):
         Получаем все фильмы в соответствии с фильтром.
         Param filters: аргумент, который может содержать id режиссёра, id жанры или год выхода фильма.
         Если фильтров нет, возвращаем все фильмы.
+        Return: список словарей с данными всех фильмов в соответствии с выбранным фильтром либо всех фильмов,
+        если фильтр не указан.
         """
         if filters.get('director_id'):
             movies = MovieDAO(self._db_session).get_by_director(filters['director_id'])

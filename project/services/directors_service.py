@@ -11,6 +11,8 @@ class DirectorService(BaseService):
         """
         Получаем режиссёра по его id.
         Param pk: id режиссёра.
+        Return: словарь с данными найденного режиссёра.
+
         """
         director = DirectorDAO(self._db_session).get_one_by_id(pk)
         if not director:
@@ -20,6 +22,8 @@ class DirectorService(BaseService):
     def get_all_directors(self):
         """
         Получаем всех режиссёров.
+        Return: список словарей с данными всех режиссёров.
+
         """
         directors = DirectorDAO(self._db_session).get_all()
         return DirectorSchema(many=True).dump(directors)
@@ -28,6 +32,7 @@ class DirectorService(BaseService):
         """
         Получаем всех режиссёров из БД с учётом ограничений по выдаче.
         Param page: номер страницы выдачи.
+        Return: список словарей с данными всех режиссёров с учётом лимита и отступа.
         """
         limit = BaseConfig.ITEMS_PER_PAGE
         offset = (int(page) - 1) * limit

@@ -11,6 +11,7 @@ class UsersService(BaseService):
         """
         Получаем пользователя по его id.
         Param pk: id пользователя.
+        Return: словарь с данными найденного пользователя.
         """
         user = UserDAO(self._db_session).get_one_by_id(pk)
         if not user:
@@ -20,6 +21,7 @@ class UsersService(BaseService):
     def get_all_users(self):
         """
         Получаем всех пользователей.
+        Return: список словарей с данными всех пользователей.
         """
         users = UserDAO(self._db_session).get_all()
         return UserSchema(many=True).dump(users)
@@ -28,6 +30,7 @@ class UsersService(BaseService):
         """
         Получаем пользователя из БД по его имейлу.
         Param email: email пользователя (он же логин).
+        Return: словарь с данными найденного пользователя.
         """
         user = UserDAO(self._db_session).get_by_email(email)
         return UserSchema().dump(user)
@@ -36,6 +39,7 @@ class UsersService(BaseService):
         """
         Получаем всех пользователей из БД с учётом ограничений по выдаче.
         Param page: номер страницы выдачи.
+        Return: список словарей с данными всех пользователей с учётом лимита и отступа.
         """
         limit = BaseConfig.ITEMS_PER_PAGE
         offset = (int(page) - 1) * limit
@@ -46,6 +50,7 @@ class UsersService(BaseService):
         """
         Создаём нового пользователя.
         Param data: данные, введённые пользователем при регистрации.
+        Return: словарь с данными созданного пользователя.
         """
         user_password = user_data.get('password')
         if user_password:
@@ -59,6 +64,7 @@ class UsersService(BaseService):
         Обновляем данные пользователя.
         Param user_data: данные пользователя, которые необходимо обновить.
         Param uid: id пользователя, чьи данные обновляем (получаем из токена).
+        Return: словарь с обновлёнными данными пользователя.
         """
         user = UserDAO(self._db_session).get_one_by_id(uid)
         if user_data.get('name'):
@@ -77,6 +83,7 @@ class UsersService(BaseService):
         Перед тем, как установить новый пароль, проверяем, совпадает ли старый с паролем, хранящимся в БД.
         Param user_data: данные со старым и новым паролем, введённые пользователем.
         Param uid: id пользователя, чьи пароли обновляем (получаем из токена).
+        Return: словарь с обновлёнными данными пользователя либо None, если пользователь не прошёл проверку пароля.
 
         """
         user_password_old = user_data.get('password_1')

@@ -11,6 +11,7 @@ class GenresService(BaseService):
         """
         Получаем жанр по его id.
         Param pk: id жанра.
+        Return: словарь с данными найденного жанра.
         """
         genre = GenreDAO(self._db_session).get_one_by_id(pk)
         if not genre:
@@ -20,6 +21,7 @@ class GenresService(BaseService):
     def get_all_genres(self):
         """
         Получаем все жанры.
+        Return: список словарей с данными всех жанров.
         """
         genres = GenreDAO(self._db_session).get_all()
         return GenreSchema(many=True).dump(genres)
@@ -28,6 +30,7 @@ class GenresService(BaseService):
         """
         Получаем все жанры с учётом ограничений по выдаче.
         Param page: номер страницы выдачи.
+        Return: список словарей с данными всех жанров с учётом лимита и отступа.
         """
         limit = BaseConfig.ITEMS_PER_PAGE
         offset = (int(page)-1)*limit
