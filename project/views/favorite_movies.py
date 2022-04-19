@@ -21,7 +21,7 @@ class FavoriteMoviesView(Resource):
             abort(404)
 
 
-@fav_movies_ns.route("/<int:mov_id>")
+@fav_movies_ns.route("/<int:mov_id>/")
 class FavoriteMovieView(Resource):
     @fav_movies_ns.response(200, "OK")
     @fav_movies_ns.response(412, "Movie already exists")
@@ -31,6 +31,9 @@ class FavoriteMovieView(Resource):
         uid = get_id_from_token()
         return FavoriteMoviesService(db.session).create(uid, mov_id)
 
+    @fav_movies_ns.response(200, "OK")
+    @fav_movies_ns.response(412, "Movie already exists")
+    @auth_required
     def delete(self, mov_id: int):
         """Delete movie from favorites"""
         uid = get_id_from_token()
