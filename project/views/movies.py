@@ -37,7 +37,7 @@ class MoviesView(Resource):
             return MoviesService(db.session).get_all_movies()
 
 
-@movies_ns.route('/genre')
+@movies_ns.route('/genre/')
 class MoviesByGenreView(Resource):
     @movies_ns.response(200, "OK")
     @auth_required
@@ -50,7 +50,7 @@ class MoviesByGenreView(Resource):
             abort(404)
 
 
-@movies_ns.route('/<int:mov_id>')
+@movies_ns.route('/<int:mov_id>/')
 class MovieView(Resource):
     @movies_ns.response(200, "OK")
     @movies_ns.response(404, "Movie not found")

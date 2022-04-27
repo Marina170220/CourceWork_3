@@ -37,7 +37,7 @@ class UserView(Resource):
             abort(404)
 
 
-@users_ns.route('/password')
+@users_ns.route('/password/')
 class UserPatchView(Resource):
     @users_ns.response(200, "OK")
     @users_ns.response(404, "User not found")

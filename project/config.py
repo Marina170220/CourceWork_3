@@ -31,3 +31,9 @@ class DevelopmentConfig(BaseConfig):
     SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(
         os.path.dirname(BASEDIR), "project.db"
     )
+
+
+class ProductionConfig(BaseConfig):
+    SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(
+        os.path.dirname(BASEDIR), "project.db"
+    )

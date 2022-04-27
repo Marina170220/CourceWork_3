@@ -22,7 +22,7 @@ class DirectorsView(Resource):
         return DirectorService(db.session).get_all_directors()
 
 
-@directors_ns.route('/<int:dir_id>')
+@directors_ns.route('/<int:dir_id>/')
 class DirectorView(Resource):
     @directors_ns.response(200, "OK")
     @directors_ns.response(404, "Director not found")

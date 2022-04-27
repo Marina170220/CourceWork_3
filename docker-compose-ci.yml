@@ -1,0 +1,9 @@
+version: "3.9"
+
+services:
+  api:
+    image: mnpetruk/hw_26:$GITHUB_REF_NAME-$GITHUB_RUN_ID
+    ports:
+      - 80:80
+    env_file:
+      - ./envs.env

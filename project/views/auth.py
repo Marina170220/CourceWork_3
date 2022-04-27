@@ -9,7 +9,7 @@ from project.tools.security import login_user, refresh_token
 auth_ns = Namespace('auth')
 
 
-@auth_ns.route('/login')
+@auth_ns.route('/login/')
 class AuthView(Resource):
     def post(self):
         """User authentication"""
@@ -35,7 +35,7 @@ class AuthView(Resource):
             abort(401, "Authorization error")
 
 
-@auth_ns.route('/register')
+@auth_ns.route('/register/')
 class AuthRegisterView(Resource):
     def post(self):
         """Create new user"""

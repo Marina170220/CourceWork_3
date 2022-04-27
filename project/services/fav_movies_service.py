@@ -24,8 +24,11 @@ class FavoriteMoviesService(BaseService):
         Param movie_id: id фильма.
         Return: словарь с данными добавленного фильма.
         """
-        movie = FavoriteMovieDAO(self._db_session).create(user_id, mov_id)
-        return MovieSchema().dump(movie)
+        try:
+            movie = FavoriteMovieDAO(self._db_session).create(user_id, mov_id)
+            return MovieSchema().dump(movie)
+        except В as e:
+            print(e)
 
     def delete(self, user_id, mov_id):
         """

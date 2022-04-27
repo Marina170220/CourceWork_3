@@ -22,7 +22,7 @@ class GenresView(Resource):
         return GenresService(db.session).get_all_genres()
 
 
-@genres_ns.route("/<int:gen_id>")
+@genres_ns.route("/<int:gen_id>/")
 class GenreView(Resource):
     @genres_ns.response(200, "OK")
     @genres_ns.response(404, "Genre not found")
