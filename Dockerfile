@@ -1,8 +1,8 @@
-FROM python:3.9
+FROM python:3.10
 
 WORKDIR /code
 COPY requirements.txt .
-RUN apt install -r requirements.txt
+RUN python -m pip install -r requirements.txt
 COPY ./project ./project
 COPY create_tables.py .
 COPY run.py .
