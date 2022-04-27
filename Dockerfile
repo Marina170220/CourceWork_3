@@ -2,7 +2,7 @@ FROM python:3.9
 
 WORKDIR /code
 COPY requirements.txt .
-RUN pip install -r requirements.txt
+RUN apt install -r requirements.txt
 COPY ./project ./project
 COPY create_tables.py .
 COPY run.py .
