@@ -11,8 +11,8 @@ auth_ns = Namespace('auth')
 
 @auth_ns.route('/login/')
 class AuthView(Resource):
+    @auth_ns.doc(description='User authentication')
     def post(self):
-        """User authentication"""
         req_json = request.json
         if not req_json:
             abort(400)
@@ -23,8 +23,8 @@ class AuthView(Resource):
         except ItemNotFound:
             abort(401, "Authorization error")
 
+    @auth_ns.doc(description='Refresh user\'s tokens')
     def put(self):
-        """Refresh user's tokens"""
         req_json = request.json
         if not req_json:
             abort(400)
@@ -37,8 +37,8 @@ class AuthView(Resource):
 
 @auth_ns.route('/register/')
 class AuthRegisterView(Resource):
+    @auth_ns.doc(description='Create new user')
     def post(self):
-        """Create new user"""
         req_json = request.json
         if not req_json:
             abort(400)

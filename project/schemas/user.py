@@ -10,4 +10,4 @@ class UserSchema(Schema):
     role = fields.Str()
     name = fields.Str()
     surname = fields.Str()
-    favorite_genre = fields.Nested(GenreSchema(only=("name",)))
+    favourite_genre = fields.Nested(GenreSchema(only=("name",)))

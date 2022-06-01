@@ -11,10 +11,10 @@ movies_ns = Namespace("movies")
 
 @movies_ns.route('/')
 class MoviesView(Resource):
+    @movies_ns.doc(description='Get all movies')
     @movies_ns.response(200, "OK")
     @auth_required
     def get(self):
-        """Get all movies"""
         limits = {}
         filters = {}
         if request.args.get('page'):
@@ -39,10 +39,10 @@ class MoviesView(Resource):
 
 @movies_ns.route('/genre/')
 class MoviesByGenreView(Resource):
+    @movies_ns.doc(description='Get movies by user\'s favorite genre')
     @movies_ns.response(200, "OK")
     @auth_required
     def get(self):
-        """Get movies by user's favorite genre"""
         user_id = get_id_from_token()
         try:
             return MoviesService(db.session).get_movies_by_favorite_genre(user_id)
@@ -52,11 +52,11 @@ class MoviesByGenreView(Resource):
 
 @movies_ns.route('/<int:mov_id>/')
 class MovieView(Resource):
+    @movies_ns.doc(description='Get movie by id')
     @movies_ns.response(200, "OK")
     @movies_ns.response(404, "Movie not found")
     @auth_required
     def get(self, mov_id: int):
-        """Get movie by id"""
         try:
             return MoviesService(db.session).get_movie_by_id(mov_id)
         except ItemNotFound:

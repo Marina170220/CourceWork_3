@@ -71,8 +71,8 @@ class UsersService(BaseService):
             user.name = user_data.get('name')
         if user_data.get('surname'):
             user.surname = user_data.get('surname')
-        if user_data.get('favorite_genre_id'):
-            user.favorite_genre_id = user_data.get('favorite_genre_id')
+        if user_data.get('favourite_genre'):
+            user.favourite_genre_id = int(user_data.get('favourite_genre'))
 
         updated_user = UserDAO(self._db_session).update(user)
         return UserSchema().dump(updated_user)

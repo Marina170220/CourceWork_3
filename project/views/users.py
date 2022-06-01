@@ -11,23 +11,24 @@ users_ns = Namespace("user")
 
 @users_ns.route('/')
 class UserView(Resource):
+    @users_ns.doc(description='Get user by id')
     @users_ns.response(200, "OK")
     @users_ns.response(404, "User not found")
     @auth_required
     def get(self):
-        """Get user by id"""
         user_id = get_id_from_token()
         try:
             return UsersService(db.session).get_user_by_id(user_id)
         except ItemNotFound:
             abort(404)
 
+    @users_ns.doc(description='Update user\'s data')
     @users_ns.response(200, "OK")
     @users_ns.response(404, "User not found")
     @auth_required
     def patch(self):
-        """Update user's data"""
         req_json = request.json
+        print(req_json)
         if not req_json:
             abort(400)
         uid = get_id_from_token()
@@ -39,11 +40,11 @@ class UserView(Resource):
 
 @users_ns.route('/password/')
 class UserPatchView(Resource):
+    @users_ns.doc(description='Update user\'s password')
     @users_ns.response(200, "OK")
     @users_ns.response(404, "User not found")
     @auth_required
     def put(self):
-        """Update user's password"""
         req_json = request.json
         if not req_json:
             abort(400)

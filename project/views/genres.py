@@ -11,10 +11,10 @@ genres_ns = Namespace("genres")
 
 @genres_ns.route("/")
 class GenresView(Resource):
+    @genres_ns.doc(description='Get all genres')
     @genres_ns.response(200, "OK")
     @auth_required
     def get(self):
-        """Get all genres"""
         page = request.args.get('page')
         if page:
             return GenresService(db.session).get_limit_genres(page)
@@ -24,11 +24,11 @@ class GenresView(Resource):
 
 @genres_ns.route("/<int:gen_id>/")
 class GenreView(Resource):
+    @genres_ns.doc(description='Get genre by id')
     @genres_ns.response(200, "OK")
     @genres_ns.response(404, "Genre not found")
     @auth_required
     def get(self, gen_id: int):
-        """Get genre by id"""
         try:
             return GenresService(db.session).get_genre_by_id(gen_id)
         except ItemNotFound:
